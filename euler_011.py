@@ -26,10 +26,16 @@ grid = [[8,2,22,97,38,15,0,40,0,75,4,5,7,78,52,12,50,77,91,8],
 def adjacent(row,col):
     if row < 17:
         down = [grid[row + k][col] for k in range(4)]
+    else:
+        down = []
     if col < 17:
         right = [grid[row][col + k] for k in range(4)]
+    else:
+        right = []
     if row < 17 and col < 17:
         downright = [grid[row+k][col+k] for k in range(4)]
+    else:
+        downright = []
     if row < 17 and col > 3:
         downleft = [grid[row+k][col-k] for k in range(4)]
     else:
@@ -40,7 +46,7 @@ start = time()
 
 max_prod = 1
 
-for pos in product(range(17),repeat=2):
+for pos in product(range(20),repeat=2):
     if max([prod(arr) for arr in adjacent(pos[0],pos[1])]) > max_prod:
         max_prod = max([prod(arr) for arr in adjacent(pos[0],pos[1])])
 
