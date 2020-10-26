@@ -17,11 +17,15 @@ prime_list = list(primesieve.primes(50000, 10**6))
 
 print("Prime list generated!")
 
+found = False
+
 for p in prime_list:
     for bp in blueprints(p):
+        if found:
+            break
         if bp_to_primes(bp) == 8:
             print("Smallest prime: " + str(p) + ", blueprint = " + bp)
-            break
+            found = True
 
 
 stop = time()
