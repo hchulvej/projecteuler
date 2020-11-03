@@ -1,9 +1,6 @@
 from time import time
 from sympy import totient
 
-def phi(n):
-    return len(set(m for m in range(1,n) if gcd(n, m) == 1))
-
 start = time()
 
 max_quotient = 3.0
