@@ -1,35 +1,60 @@
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class euler_008 {
 
-    private static BufferedInputStream bis = null;
+    private static Scanner sc;
     private static String path = "C:\\test\\projecteuler\\euler_008.txt";
-    private static byte[] digits = new byte[1000];
+    private static String input = "";
+
+    public static long product(String s) {
+        String[] ls = s.split("");
+
+        long prod = 1;
+        for (String str : ls) {
+            prod *= Long.parseLong(str);
+        }
+        return prod;
+    }
 
     public static void main(String[] args) {
 
+        long startTime = System.nanoTime();
+
         try {
-            bis = new BufferedInputStream(new FileInputStream(path));
-            bis.read(digits);
+            sc = new Scanner(new FileInputStream(path));
+            while (sc.hasNextLine()) {
+                input += sc.nextLine();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        StringBuffer sb = new StringBuffer();
+        String[] nonZeroParts = input.split("0");
 
-        for (byte b : digits) {
-            sb.append((char) b);
+        long greatestProduct = 0;
+
+        for (String nzp : nonZeroParts) {
+            if (nzp.length() > 12) {
+                int offset = 0;
+                while (offset + 12 < nzp.length()) {
+                    String c = nzp.substring(offset, offset + 13);
+                    long p = product(c);
+                    if (p > greatestProduct) {
+                        greatestProduct = p;
+                    }
+                    offset++;
+                }
+            }
         }
-        sb.trimToSize();
 
-        String inputAsString = sb.toString();
+        long duration = System.nanoTime() - startTime;
 
-        for (int j = 0; j + 13 < inputAsString.length(); j++) {
-            String subString = inputAsString.substring(j, j + 13);
-            System.out.println(Double.parseDouble(subString));
-        }
+        System.out.println("The greatest product is " + greatestProduct + ". Runtime took around " + duration
+                + " nanoseconds.");
     }
 }
