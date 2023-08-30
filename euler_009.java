@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class euler_009 {
 
     public static void main(String[] args) {
