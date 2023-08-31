@@ -10,7 +10,7 @@ public class euler_011 {
 
     private static BufferedInputStream bis = null;
     private static BufferedReader br = null;
-    private static String path = "C:\\test\\projecteuler\\euler_011.txt";
+    private static String path = "C:\\Java\\projecteuler\\euler_011.txt";
     private static int[][] grid = new int[20][20];
     private static StringBuffer input = new StringBuffer();
 
@@ -52,12 +52,21 @@ public class euler_011 {
 
         for (int row = 0; row < 20; row++) {
             for (int col = 0; col < 20; col++) {
+                int maxProd = 0;
                 // Right
-
-                // Left
-
-                //
-            }
+                if (col + 3 < 20) {
+                    maxProd = Math.max(maxProd, grid[row][col] * grid[row][col+1] * grid[row][col+2] * grid[row][col+3]);
+                }
+                // Down right
+                if (col + 3 < 20 && row + 3 < 20) {
+                    maxProd = Math.max(maxProd, grid[row][col] * grid[row+1][col+1] * grid[row+2][col+2] * grid[row+3][col+3]);
+                }
+                // Up right
+                if (col + 3 < 20 && row - 3 >= 0) {
+                    maxProd = Math.max(maxProd, grid[row][col] * grid[row-1][col+1] * grid[row-2][col+2] * grid[row-3][col+3]);
+                }
+                largestProduct = Math.max(largestProduct, maxProd);
+            }   
         }
 
         long duration = System.nanoTime() - startTime;
