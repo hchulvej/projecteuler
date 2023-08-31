@@ -48,9 +48,21 @@ public class euler_011 {
 
         parseInput(input.toString());
 
+        int largestProduct = -1;
+
+        for (int row = 0; row < 20; row++) {
+            for (int col = 0; col < 20; col++) {
+                // Right
+
+                // Left
+
+                //
+            }
+        }
+
         long duration = System.nanoTime() - startTime;
 
-        System.out.println("The threatest product is " + 1 + ". Runtime took around " + duration
+        System.out.println("The threatest product is " + largestProduct + ". Runtime took around " + duration
                 + " nanoseconds.");
     }
 }
