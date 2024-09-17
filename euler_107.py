@@ -4,13 +4,13 @@ from unionfind import unionfind
 
 edges = set()
 
-with open("euler_107_small.txt", "r") as f:
+with open("euler_107.txt", "r") as f:
     lines = f.readlines()
-    for row, line in enumerate(lines):
-        weights = [n.strip() for n in line.split(",")]
-        for col, weight in enumerate(weights):
+    matrix = [list(line.replace("\n", "").split(",")) for line in lines]
+    for row, line in enumerate(matrix):
+        for col, weight in enumerate(line):
             if weight != "-" and row != col:
-                edges.add((min(row,col), max(row,col),int(weight)))
+                edges.add((min(row, col), max(row, col), int(weight)))
 
 edges = list(edges)
 edges = sorted(edges, key=lambda x: x[2])
@@ -38,8 +38,8 @@ def kruskal(edges, uf):
     
     return mst_weight
 
-print(edges)
-print(sum([edge[2] for edge in edges]))
+print(sum([edge[2] for edge in edges])-kruskal(edges, uf))
+
 
         
                
