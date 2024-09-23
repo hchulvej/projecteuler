@@ -37,18 +37,18 @@ def partition_number(number):
     # Call the helper function on the entire number as a string
     return helper(num_str)
 
-# Example usage:
-number = 123456789123456789
-partitions = partition_number(number)
-for p in partitions:
-    print(p)
+
 
 
 
 
 start = time()
 
+# Fill the memo
+for n in range(1,1000001):
+    partition_number(n)
 
+print(len(memo.keys()))
 
 end = time()
 
