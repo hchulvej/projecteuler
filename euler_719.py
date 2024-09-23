@@ -1,25 +1,54 @@
 from time import time
-from math import sqrt
-import functools
 
+# Memoization dictionary to store results for substrings
 memo = {}
 
-def partitions(s):
-    if len(s) > 0:
-        for i in range(1, len(s)+1):
-            first, rest = s[:i], s[i:]
-            for p in partitions(rest):
-                yield [first] + p
-    else:
-        yield []
+def partition_number(number):
+    # Convert the number to string to handle partitions
+    num_str = str(number)
+    
+    # Helper recursive function
+    def helper(s):
+        # If already computed, return from memo
+        if s in memo:
+            return memo[s]
+        
+        # Base case: if only one digit, return as a partition
+        if len(s) == 1:
+            return [(int(s),)]
 
-@functools.lru_cache
-def is_s_number(N: int) -> bool:
-    return int(sqrt(N)) in [sum(list(map(int, p))) for p in partitions(str(N)) if len(p) > 1]
+        partitions = []
+        
+        # Partition the string in all possible ways
+        for i in range(1, len(s)):
+            left_part = int(s[:i])
+            right_partitions = helper(s[i:])
+            # Append the current partition (left_part, and all right partitions)
+            for right in right_partitions:
+                partitions.append((left_part,) + right)
+        
+        # Include the whole string as a partition (the original number)
+        partitions.append((int(s),))
+
+        # Store the result in memo
+        memo[s] = partitions
+        return partitions
+
+    # Call the helper function on the entire number as a string
+    return helper(num_str)
+
+# Example usage:
+number = 123456789123456789
+partitions = partition_number(number)
+for p in partitions:
+    print(p)
+
+
+
 
 start = time()
 
-print(sum([n**2 for n in range(1, 1000001) if is_s_number(n**2)]))
+
 
 end = time()
 
