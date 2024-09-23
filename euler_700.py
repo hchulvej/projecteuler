@@ -1,36 +1,28 @@
 from time import time
+from libnum import invmod
 
 start = time()
 
-eulercoins = [1504170715041707]
+M = 1504170715041707
+N = 4503599627370517
+
+eulercoins = [(1504170715041707, 1)]
 smallest_eulercoin = 1504170715041707
 
-tested_numbers = set({1504170715041707})
+n = 1
 
-def sequence():
-    n = 1
-    while True:
-        yield (1504170715041707 * n) % 4503599627370517
-        n += 1
-        
-gen = sequence()
+# We find the first few Eulercoins by brute force
+while len(eulercoins) < 16:
+    n += 1
+    e = (M * n) % N
+    if e < smallest_eulercoin:
+        eulercoins.append((e,n))
+        smallest_eulercoin = e
 
-running = True
-
-e_n = next(gen)
-
-while running:
-    e_n = next(gen)
-    if e_n in tested_numbers:
-        running = False
-    if e_n < smallest_eulercoin:
-        smallest_eulercoin = e_n
-        eulercoins.append(e_n)
-
-sum_of_eulercoins = sum(eulercoins)
+print(eulercoins[-1])
+# Eulercoin no. 16 is 15806432 corresponding to n = 42298633
 
 ## NOT DONE - TOO INEFFICIENT
 
 end = time()
-print("The sum of all Eulercoins is ", sum_of_eulercoins)
 print("Time: " + str(end - start) + " seconds")
