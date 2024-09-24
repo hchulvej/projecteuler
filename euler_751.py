@@ -1,37 +1,36 @@
 from time import time
 from math import floor
+from gmpy2 import mpfr
+from typing import Generator
 
-def gen(phi):
+def gen(phi: mpfr) -> Generator[mpfr, None, None]:
     b = phi
-    a = floor(b)
+    a = mpfr(floor(b))
     while True:
         yield a
-        b = floor(b) * (b - floor(b) + 1)
-        a = floor(b)
+        b = mpfr(floor(b)) * mpfr(b - mpfr(floor(b)) + mpfr(1))
+        a = mpfr(floor(b))
 
-def concatenated(phi):
+def concatenated(phi: mpfr) -> mpfr:
     g = gen(phi)
     before = str(next(g)) + "."
     after = ""
     while len(after) < 24:
         after += str(next(g))
-    return before + after[0:24]
+    return mpfr(before + after[0:24])
 
-def difference(phi):
-    return float(concatenated(phi)) - phi
+def difference(phi: mpfr) -> mpfr:
+    return mpfr(concatenated(phi)) - phi
+
+def add_decimal(phi: mpfr, d: int) -> mpfr:
+    after = str(phi - mpfr(2))[1:]
+    added = mpfr("0." + "0"*len(after) + str(d))
+    return phi + added
 
 start = time()
 
-def add_digit(l: list[float]) -> list[float]:
-    d = len(str(l[0]))
-    candidates = [(f +float(t/(10**(d-2))), difference(f +float(t/(10**(d-2))))) for t in range(1, 10) for f in l]
-    candidates.sort(key=lambda x: abs(x[1]))
-    return [c[0] for c in candidates[:2]]
-
-phi_ex = 2.0
-candidates = add_digit([phi_ex])
-candidates = add_digit(candidates)
-print(candidates)
+phi = mpfr(2.2)
+print(phi, add_decimal(phi, 5))
 
 end = time()
 print("Time: " + str(end - start) + " seconds")
