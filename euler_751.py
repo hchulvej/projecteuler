@@ -1,36 +1,35 @@
 from time import time
-from math import floor
-from gmpy2 import mpfr
+from decimal import Decimal, getcontext, ROUND_FLOOR
 from typing import Generator
 
-def gen(phi: mpfr) -> Generator[mpfr, None, None]:
+getcontext().prec = 102
+getcontext().rounding = ROUND_FLOOR
+
+def generate(phi: Decimal) -> Generator[Decimal, None, None]:
     b = phi
-    a = mpfr(floor(b))
+    a = round(b,0)
     while True:
         yield a
-        b = mpfr(floor(b)) * mpfr(b - mpfr(floor(b)) + mpfr(1))
-        a = mpfr(floor(b))
+        b = round(b,0)*(b - round(b,0) + 1)
+        a = round(b,0)
 
-def concatenated(phi: mpfr) -> mpfr:
-    g = gen(phi)
-    before = str(next(g)) + "."
-    after = ""
-    while len(after) < 24:
-        after += str(next(g))
-    return mpfr(before + after[0:24])
+def concatenate(phi: Decimal) -> Decimal:
+    g = generate(phi)
+    s = str(next(g)) + "."
+    ls = len(s)
+    while len(s) < 24 + ls:
+        s += str(next(g))
+    s = s[:24 + ls]
+    return Decimal(s)
 
-def difference(phi: mpfr) -> mpfr:
-    return mpfr(concatenated(phi)) - phi
-
-def add_decimal(phi: mpfr, d: int) -> mpfr:
-    after = str(phi - mpfr(2))[1:]
-    added = mpfr("0." + "0"*len(after) + str(d))
-    return phi + added
+def add_digit(candidates: list[Decimal], digits: int) -> list[Decimal]:
+    new_candidates = [round(Decimal(str(c) + str(d)), digits) for c in candidates for d in range(10)]
+    return new_candidates
 
 start = time()
 
-phi = mpfr(2.2)
-print(phi, add_decimal(phi, 5))
+print(add_digit([Decimal(2.1)], 3))
+
 
 end = time()
 print("Time: " + str(end - start) + " seconds")
