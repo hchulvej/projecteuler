@@ -24,15 +24,17 @@ def concatenate(phi: Decimal) -> Decimal:
 
 def add_digit(candidates: list[Decimal], digits: int) -> list[Decimal]:
     new_candidates = [Decimal(str(c)[:digits] + str(d)) for c in candidates for d in range(10)]
-    new_candidates.sort(key=lambda x: abs(concatenate(x)-x))
-    return new_candidates[:2]
+    new_candidates.sort(key=lambda x: (concatenate(x)-x))
+    smallest_positive = list(filter(lambda x: x > 0, new_candidates))[0]
+    smallest_index = new_candidates.index(smallest_positive)
+    return [new_candidates[smallest_index], new_candidates[smallest_index + 1]]
 
 start = time()
 
 candidates = [Decimal("2." + str(d)) for d in range(10)]
-for d in range(23):
+for d in range(4):
     candidates = add_digit(candidates, d + 3)
-print(candidates[0])
+print(candidates)
 
 
 end = time()
