@@ -23,7 +23,7 @@ for p in primes:
     if p*p > LIMIT or ipp > LIMIT:
         print("Limit too low.")
         break
-    if is_not_palindrome(p*p) and is_not_palindrome(ipp) and ipp in primes:
+    if is_not_palindrome(p*p) and is_not_palindrome(ipp) and int(sqrt(ipp)) in primes:
         rps.append(p*p)
     if len(rps) > 50:
         print("Found 50.")
