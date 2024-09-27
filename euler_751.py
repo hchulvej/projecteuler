@@ -1,17 +1,18 @@
 from time import time
-from decimal import Decimal, getcontext, ROUND_FLOOR
+from decimal import Decimal, getcontext
+from math import floor
 from typing import Generator
 
 getcontext().prec = 102
-#getcontext().rounding = ROUND_FLOOR
+
 
 def generate(phi: Decimal) -> Generator[Decimal, None, None]:
     b = phi
-    a = round(b,0)
+    a = floor(b)
     while True:
         yield a
-        b = round(b,0)*(b - round(b,0) + Decimal(1))
-        a = round(b,0)
+        b = floor(b)*(b - floor(b) + Decimal(1))
+        a = floor(b)
 
 def concatenate(phi: Decimal) -> Decimal:
     g = generate(phi)
@@ -22,19 +23,24 @@ def concatenate(phi: Decimal) -> Decimal:
     s = s[:24 + ls]
     return Decimal(s)
 
-def add_digit(candidates: list[Decimal], digits: int) -> list[Decimal]:
-    new_candidates = [Decimal(str(c)[:digits] + str(d)) for c in candidates for d in range(10)]
-    new_candidates.sort(key=lambda x: (concatenate(x)-x))
-    smallest_positive = list(filter(lambda x: x > 0, new_candidates))[0]
-    smallest_index = new_candidates.index(smallest_positive)
-    return [new_candidates[smallest_index], new_candidates[smallest_index + 1]]
+def diff(phi: Decimal) -> Decimal:
+    return concatenate(phi) - phi
+
+
+def add_digit(smallest_positive: str) -> Decimal:
+    cs = [Decimal((smallest_positive + str(d))) for d in range(10)]
+    dfs = list(filter(lambda x: diff(x) >= 0, cs))
+    dfs = sorted(dfs, key=diff)
+    return Decimal(str(dfs[0]))
+
+d = "2."
+while len(d) < 24 + 2:
+    d = str(add_digit(d))
+print(d)
 
 start = time()
 
-candidates = [Decimal("2." + str(d)) for d in range(10)]
-for d in range(4):
-    candidates = add_digit(candidates, d + 3)
-print(candidates)
+
 
 
 end = time()
