@@ -32,7 +32,7 @@ for p in primes:
         break
     if is_not_palindrome(p*p) and squares_of_primes(p*p,primes):
         rps.append(p*p)
-    if len(rps) > 50:
+    if len(rps) == 50:
         print("Found 50.")
         break
         
