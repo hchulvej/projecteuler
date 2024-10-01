@@ -1,21 +1,37 @@
 from time import time
 from sympy import factorint, sieve
+from itertools import product
 
-def Fibonacci() -> list[int]:
-    fib = [0, 1]
-    while len(fib) < 122:
-        fib.append((fib[-1] + fib[-2]))
-    return fib
+F_120 = 5358359254990966640871840 #= 2^5 * 3^2 * 5 * 7 * 11 * 23 * 31 * 41 * 61 * 241 * 2161 * 2521 * 20641
+F_121 = 8670007398507948658051921 #= 89 * 97415813466381445596089
 
-# If n > 2 and L_t <= n, then pi(n) >= 2t
-# L_60 = 29075380
-# L_61 = 38516678
-# I.e. if n >= 38516678, then pi(n) >= 122
-# We limit n to be < 38516678
+
+
+def basic_pisano(n: int) -> int:
+    if n < 2:
+        return 1
+    else:
+        a, b = 1, 1
+        i = 1
+        while a != 0 or b != 1:
+            a, b = b, (a + b) % n
+            i += 1
+        return i
+
 start = time()
 sum = 0
-primes = [p for p in sieve.primerange(38516678)]
-print(primes[-1])
+
+coeffs = product(range(6), range(3), range(2), range(2), range(2), range(2), range(2), range(2), range(2), range(2), range(2), range(2), range(2))
+candidates = []
+
+for c in coeffs:
+    n = (2**c[0])*(3**c[1])*(5**c[2])*(7**c[3])*(11**c[4])*(23**c[5])*(31**c[6])*(41**c[7])*(61**c[8])*(241**c[9])*(2161**c[10])*(2521**c[11])*(20641**c[12])
+    if n < 1000000000:
+        candidates.append(n)
+    
+for n in candidates:
+    if basic_pisano(n) == 120:
+        sum += n
 
 end = time()
 print("Sum: " + str(sum))
