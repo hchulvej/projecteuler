@@ -12,23 +12,13 @@ def single(n: int) -> int:
     m, k = n % 9, n // 9
     return ((m+1)*10**k - 1) % 1000000007
 
-@cache
-def sum_of_singles(n: int) -> int:
-    if n == 1:
-        return 1
-    return (single(n) + sum_of_singles(n - 1)) % 1000000007
 
 start = time()
 
 thesum = 0
-a = 1
-b = 1
-for i in range(2, 91):
-    a, b = b, a + b
+
     
-    
-print(single(10))
-print(sum_of_singles(b))
+print(sum([single(n) for n in range(18)]))
 
 end = time()
 print("Sum: " + str(thesum))
