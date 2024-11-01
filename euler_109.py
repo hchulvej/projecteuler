@@ -27,33 +27,27 @@ def checkout_value(throws):
         total += throw_value(t)
     return total
 
-def compare_throws(throw1, throw2):
-    if throw1[0] == throw2[0]:
-        return int(throw1[1:]) - int(throw2[1:])
-    if throw1[0] == "S":
-        return -1
-    if throw2[0] == "S":
-        return 1
-    if throw1[0] == "D" and throw2[0] == "T":
-        return -1
-    else:
-        return 1
-
-two_first_throws = set([(t) for t in single_throws])
-for t1, t2 in product(two_first_throws, two_first_throws):
-    if compare_throws(t1, t2) != 1:
-        two_first_throws.add((t1, t2))
-
-two_first_throws = list(two_first_throws)
+def sort_two_throws(t1, t2):
+    if t1[0] == t2[0]:
+        if throw_value(t1) > throw_value(t2):
+            return (t2, t1)
+        else:
+            return (t1, t2)
+    if t1[0] == "S":
+        return (t1, t2)
+    if t2[0] == "S":
+        return (t2, t1)
+    if t1[0] == "D":
+        return (t1, t2)
+    if t2[0] == "D":
+        return (t2, t1)
+    return "Error"  
 
 
-all_throws = set([t for t in two_first_throws if t[-1][0] == "D"])
+two_throws = set()
+for t1, t2 in product(single_throws, single_throws):
+    two_throws.add(sort_two_throws(t1, t2))
+for t in single_throws:
+    two_throws.add(("0", t))
 
-
-for t in two_first_throws:
-    for s in [s for s in single_throws if s[0] == "D"]:
-        all_throws.add((*t, s))
-
-# print([a for a in all_throws if len(a[0]) == 1])
-
-
+print("Number of two throws: " + str(len(two_throws)))
