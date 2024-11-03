@@ -1,5 +1,7 @@
-import functools
 from itertools import product
+from time import time
+
+start = time()
 
 values = [str(v) for v in range(1,21)]
 multipliers = ["S","D", "T"]
@@ -49,5 +51,21 @@ for t1, t2 in product(single_throws, single_throws):
     two_throws.add(sort_two_throws(t1, t2))
 for t in single_throws:
     two_throws.add(("0", t))
+two_throws.add(("0", "0"))
 
-print("Number of two throws: " + str(len(two_throws)))
+two_throws = list(two_throws)
+
+three_throws = []
+for t3 in [s for s in single_throws if s[0] == "D"]:
+    for t in two_throws:
+        three_throws.append((t[0], t[1], t3))
+
+no_checkouts = 0
+for t in three_throws:
+    if checkout_value(t) < 100:
+        no_checkouts += 1
+
+
+end = time()
+print("Time: " + str(end - start) + " seconds")
+print("number of checkouts: " + str(no_checkouts))
