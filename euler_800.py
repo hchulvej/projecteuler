@@ -8,6 +8,9 @@ def prime_gen():
         yield n
         n = next_prime(n)
 
+def log_power(a,b):
+    return log(a) * b + a * log(b)
+
 start = time()
 
 primes = [2, 3]
@@ -16,14 +19,23 @@ pg = prime_gen()
 limit = 800
 n = limit * log(limit)
 
-prime_limit = primes[-1]*log(primes[-1]) + primes[-2]*log(primes[-2])
+prime_limit = log_power(primes[-1], primes[-2])
+
 
 while prime_limit < n:
     primes.append(next(pg))
-    prime_limit = primes[-1]*log(primes[-1]) + primes[-2]*log(primes[-2])
+    prime_limit = log_power(primes[-1], primes[-2])
 
 
-print(n, prime_limit)
+f = dict(zip(primes, [0]*len(primes)))
+
+for p in primes:
+    for i in range(primes.index(p) + 1, len(primes)):
+        if log_power(p, primes[i]) > limit:
+            f[p] = primes[i - 1]
+            break
+
+print(f)
 
 end = time()
 print("Time: " + str(end - start) + " seconds")
