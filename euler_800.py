@@ -27,9 +27,8 @@ def prime_gen():
 start = time()
 
 a = 800
-b = 1
-p = 2
-ul = int(b * log(a) / log(p)) + 1
+b = 800
+ul = int(b * log(a) / log(2))
 
 print("Upper limit: " + str(ul))
 
@@ -39,11 +38,14 @@ primes = [2, 3]
 while primes[-1] < ul:
     primes.append(next(pg))
 
-for q in [q for q in primes if q > p]:
-    if suitable_q(p, b, a, q):
-        print(p, q)
-    
+suitable_qs = dict(zip(primes, [0] * len(primes)))
 
+for p in primes:
+    for q in [q for q in primes if q > p]:
+        if suitable_q(p, b, a, q):
+            suitable_qs[p] += 1
+    
+print(sum(suitable_qs.values()))
 
 end = time()
 print("Time: " + str(end - start) + " seconds")
