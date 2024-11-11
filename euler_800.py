@@ -1,6 +1,22 @@
 from time import time
-from math import log, exp, comb
+from math import log
 from gmpy2 import next_prime
+
+# Reasoning:
+#
+# p^q * q^p <= n = a^b <=> q*log(p)+p*log(q) <= b*log(a)
+#
+# For a given prime p, we want to count the number of primes q > p such that q^p * p^q <= n
+# or q*log(p)+p*log(q) <= b*log(a)
+#
+# A lower limit on q is p + 1
+#
+# and an upper limit is (b*log(a))/log(p), since q*log(p)+p*log(q) <= b*log(a) => q < (b*log(a))/log(p)
+#
+# The function q -> q*log(p)+p*log(q) is increasing, so we can use binary search to find the number of primes q > p such that q*log(p)+p*log(q) <= b*log(a).
+
+def suitable_q(p, b, a, q):
+    return q * log(p) + p * log(q) <= b * log(a)
 
 def prime_gen():
     n = 5
@@ -8,43 +24,19 @@ def prime_gen():
         yield n
         n = next_prime(n)
 
-def log_power(a,b):
-    return log(a) * b + a * log(b)
-
-def binary_search(p, upper_limit):
-    low = p + 1
-    high = int(upper_limit) + 1
-    mid = low
-    print(low, high, mid)
-    
-    while low <= high:
-        mid = (low + high) // 2
-        if log_power(p, mid) > upper_limit:
-            high = mid - 1
-        elif log_power(p, mid) < upper_limit:
-            low = mid + 1
-        else:
-            return mid
-    
-    return -1
-
-
 start = time()
 
-primes = [2, 3]
-pg = prime_gen()
+a = 800
+b = 1
+p = 2
+ul = int(b * log(a) / log(p)) + 1
 
-limit = 800
-n = limit * log(limit)
+while p <= ul:
+    for q in range(p + 1, ul + 1):
+        if suitable_q(p, b, a, q):
+            print(p, q)
+    p = next(prime_gen())
 
-prime_limit = log_power(primes[-1], primes[-2])
-
-while prime_limit < n:
-    primes.append(next(pg))
-    prime_limit = log_power(primes[-1], primes[-2])
-
-
-print(binary_search(2, 8000000))
 
 end = time()
 print("Time: " + str(end - start) + " seconds")
