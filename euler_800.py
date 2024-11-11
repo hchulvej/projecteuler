@@ -31,11 +31,18 @@ b = 1
 p = 2
 ul = int(b * log(a) / log(p)) + 1
 
-while p <= ul:
-    for q in range(p + 1, ul + 1):
-        if suitable_q(p, b, a, q):
-            print(p, q)
-    p = next(prime_gen())
+print("Upper limit: " + str(ul))
+
+pg = prime_gen()
+
+primes = [2, 3]
+while primes[-1] < ul:
+    primes.append(next(pg))
+
+for q in [q for q in primes if q > p]:
+    if suitable_q(p, b, a, q):
+        print(p, q)
+    
 
 
 end = time()
