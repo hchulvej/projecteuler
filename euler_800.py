@@ -44,12 +44,14 @@ print("Time: " + str(end - start) + " seconds")
 
 suitable_qs = dict(zip(primes, [0] * len(primes)))
 
-for p in primes:
-    for q in [q for q in primes if q > p]:
-        if suitable_q(p, b, a, q):
-            suitable_qs[p] += 1
+print("Test prime =", primes[100], " limit =", int(b * log(a) / log(primes[100])))
+
+for i in range(len(primes)-1):
+    if suitable_q(primes[100], b, a, primes[i]) and not suitable_q(primes[100], b, a, primes[i+1]):
+        print("Largest q is", str(primes[i]))
+
     
-print(sum(suitable_qs.values()))
+
 
 end = time()
 print("Time: " + str(end - start) + " seconds")
