@@ -38,6 +38,10 @@ primes = [2, 3]
 while primes[-1] < ul:
     primes.append(next(pg))
 
+end = time()
+print(str(len(primes)) + " primes generated.")
+print("Time: " + str(end - start) + " seconds")
+
 suitable_qs = dict(zip(primes, [0] * len(primes)))
 
 for p in primes:
