@@ -1,7 +1,6 @@
 from time import time
 from gmpy2 import next_prime
 from itertools import permutations
-import numpy as np
 
 def prime_generator():
     p = 2
@@ -48,20 +47,33 @@ def get_partitions(n):
 
 def partition_to_number(partition):
     digits = list(map(str, partition))
-    numbers = np.empty(len(digits), dtype=np.int16)
+    numbers = []
     for c in permutations(digits, len(digits)):
-        num = int("".join(c))
-        print(num)
-        np.append(numbers, num)
-    return numbers
+        numbers.append(int("".join(c)))
+    return list(set(numbers))
 
 start = time()
 
-n = 61
+n = 10
 pg = prime_generator()
 numbers = set()
 
-print([list(partition_to_number(partition)) for partition in get_partitions(5)])
+primes = []
+p = next(pg)
+while p < 37:
+    primes.append(p)
+    p = next(pg)
+
+print("Number of primes: " + str(len(primes)))
+
+for p in primes:
+    partitions_p = get_partitions(p)
+    for partition in partitions_p:
+        numbers.update(partition_to_number(partition))
+    print("numbers added for p = " + str(p))
+
+numbers = sorted(list(numbers))
+print("Number of partitions: " + str(len(numbers)))
 
 end = time()
 print("Time: " + str(end - start) + " seconds")
