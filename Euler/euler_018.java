@@ -1,6 +1,7 @@
 package Euler;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class euler_018 {
@@ -10,18 +11,20 @@ public class euler_018 {
         String path = "D:\\Java\\Euler\\projecteuler\\euler_018.txt";
 
         int[][] triangle = null;
-        
+        ArrayList<String[]> lines = new ArrayList<String[]>();
 
         Scanner sc = null;
 
         try {
             sc = new Scanner(new File(path));
             while (sc.hasNextLine()) {
-                System.out.println(sc.nextLine());
+                lines.add(sc.nextLine().split(" "));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        lines.stream().forEach(line -> System.out.println(line));
     }
 
 }
