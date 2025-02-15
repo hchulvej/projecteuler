@@ -11,7 +11,7 @@ public class euler_018 {
         String path = "D:\\Java\\Euler\\projecteuler\\euler_018.txt";
 
         int[][] triangle = null;
-        ArrayList<String[]> lines = new ArrayList<String[]>();
+        ArrayList<String[]> lines = new ArrayList<>();
 
         Scanner sc = null;
 
