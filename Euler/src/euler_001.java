@@ -1,3 +1,5 @@
+package Euler;
+
 public class euler_001 {
 
     public static void main(String[] args) {
