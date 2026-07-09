@@ -1,3 +1,9 @@
 import gmpy2 as g
+from time import time
 
-print(g.is_prime(10007))
+start = time()
+
+# I takes too long to generate all 10-digit primes
+
+end = time()
+print("Time: " + str(end - start) + " seconds")
