@@ -21,6 +21,7 @@ for j in range(1, len(xvals) + 1):
     fw_diffs[j] = int(forward_differences(xvals[:j], yvals[:j]))
 
 print(fw_diffs)
+print(yvals)
 
 start = time()
 
